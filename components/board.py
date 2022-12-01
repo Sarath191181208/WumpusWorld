@@ -1,5 +1,5 @@
 import pygame
-
+from queue import PriorityQueue
 from .cell import Cube, CellStates
 
 
@@ -27,7 +27,7 @@ class Grid():
 
         self.player: Cube = None
 
-        self._wumpus_stack = list()
+        self._wumpus_stack = PriorityQueue()
         self._visited = set()
         self._start = False
 
@@ -138,24 +138,26 @@ class Grid():
         return self.cubes[x][y]
 
     def update_state(self) -> bool:
-        if len(self._wumpus_stack) == 0 and self._start == False:
+        if self._wumpus_stack.empty() and self._start == False:
             self._wumpus_params_reset()
             self._start = True
         return self._update_next_board_state()
 
     def _wumpus_params_reset(self):
-        self._wumpus_stack = [self.player]
+        self._wumpus_stack = PriorityQueue()
+        self._wumpus_stack.put(self.player)
         self._visited.clear()
+        self._visited.add(self.player)
 
     def _update_next_board_state(self) -> bool:
         player = self.player
         curr_row, curr_col = player.row, player.col
-        if len(self._wumpus_stack) == 0:
+        if self._wumpus_stack.empty():
             self._wumpus_params_reset()
             self._start = False
             return True
 
-        cell = self._wumpus_stack.pop()
+        cell = self._wumpus_stack.get()
         if cell.state == CellStates.TREASURE:
             print("Way Found")
             self._start = False
@@ -188,7 +190,8 @@ class Grid():
         if player.is_dangerous():
             for cell in not_visited_cells: cell._prob_score *= 1/n
             adj_cells.sort(key=lambda cell: cell._prob_score, reverse=True)
-        self._wumpus_stack.extend(adj_cells)
+        for cell in adj_cells:
+            self._wumpus_stack.put(cell)
         self.update_surface()
         self.draw()
 

@@ -91,5 +91,11 @@ class Cube():
         
         return False
 
+    def __lt__(self, o):
+        return self._prob_score < o._prob_score
+    
+    def __rt__(self, o):
+        return self._prob_score > o._prob_score
+
     def __str__(self) -> str:
         return f"Cell(row: {self.row}, col: {self.col}, state: {self.state})"
