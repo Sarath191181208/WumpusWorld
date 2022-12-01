@@ -174,6 +174,10 @@ class Grid():
             return cell.state == CellStates.EMPTY or cell.state == CellStates.TREASURE
 
         adj_cells = [cell for cell in adj_cells if valid_cell(cell)]
+        n = len(adj_cells)
+        if player.is_dangerous():
+            for cell in adj_cells: cell._prob_score *= 1/n
+            adj_cells.sort(key=lambda cell: cell._prob_score, reverse=True)
         self._wumpus_stack.extend(adj_cells)
         self.update_surface()
         self.draw()
