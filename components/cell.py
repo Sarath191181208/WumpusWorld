@@ -28,7 +28,7 @@ class Cube():
         self._cell_height, self._cell_width = height, width
         self.modifiers = set()
         
-        self._prob_score = 1
+        self._prob_score:float() = 1
 
     def _get_rects(self) -> list[tuple[CellStates, pygame.Rect]]:
         cell_w, cell_h = self._cell_height, self._cell_height
@@ -71,7 +71,7 @@ class Cube():
         for cell_state, rect in self._get_rects():
             pygame.draw.rect(win, cell_state.value, rect)
         
-        text = PYtxt(self._prob_score, 22)
+        text = PYtxt(round(self._prob_score, 2), 12)
         win.blit(text, (x + (cell_w/2 - text.get_width()/2),
                         y + (cell_h/2 - text.get_height()/2)))
 

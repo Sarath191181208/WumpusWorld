@@ -170,13 +170,23 @@ class Grid():
         def valid_cell(cell: Cube):
             if cell in self._visited:
                 return False
-            self._visited.add(cell)
             return cell.state == CellStates.EMPTY or cell.state == CellStates.TREASURE
 
+        def get_not_visited_cells(cell: Cube) -> list[Cube]:
+            cells = self._get_adjacent_cells(curr_row, curr_col)
+            print(len(cells))
+            helper_arr: list[Cube] = []
+            for cell in cells:
+                if cell not in self._visited:
+                    helper_arr.append(cell)
+            return helper_arr
+
         adj_cells = [cell for cell in adj_cells if valid_cell(cell)]
-        n = len(adj_cells)
+        not_visited_cells = get_not_visited_cells(cell)
+        for cell in adj_cells: self._visited.add(cell)
+        n = len(not_visited_cells)
         if player.is_dangerous():
-            for cell in adj_cells: cell._prob_score *= 1/n
+            for cell in not_visited_cells: cell._prob_score *= 1/n
             adj_cells.sort(key=lambda cell: cell._prob_score, reverse=True)
         self._wumpus_stack.extend(adj_cells)
         self.update_surface()
