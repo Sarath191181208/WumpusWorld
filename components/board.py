@@ -176,7 +176,6 @@ class Grid():
 
         def get_not_visited_cells(cell: Cube) -> list[Cube]:
             cells = self._get_adjacent_cells(curr_row, curr_col)
-            print(len(cells))
             helper_arr: list[Cube] = []
             for cell in cells:
                 if cell not in self._visited:
