@@ -1,6 +1,3 @@
-import os
-from typing import Union
-
 import pygame
 import pygame_gui
 from buttons import createbuttons

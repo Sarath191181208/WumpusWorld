@@ -4,7 +4,7 @@ from components.button import Button
 from components.board import Grid
 
 
-def createbuttons(name_action_dict: dict, WIN: pygame.Surface, board: Grid, manager: pygame_gui.UIManager) -> int:
+def createbuttons(name_action_dict: dict, WIN: pygame.surface.Surface, board: Grid, manager: pygame_gui.UIManager) -> int:
     """ 
         Returns:
         ---- 
